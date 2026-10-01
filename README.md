@@ -22,3 +22,8 @@ Berdasarkan hasil analisis SHAP, fitur dipilih menggunakan nilai mean absolute S
 Fitur yang telah terpilih kemudian digunakan untuk melatih kembali model XGBoost regression sehingga diperoleh model akhir dengan fitur hasil seleksi SHAP.
 8. **EVALUASI MODEL**
 Model akhir kemudian dievaluasi menggunakan MAE, RMSE, dan R² untuk mengetahui tingkat kesalahan dan kemampuan model dalam mengestimasi tekanan darah.
+
+PENGUMPULAN DATA
+Menggunakan datasheets kaggle part 1 dan part 12
+
+EKSTRAKSI FITUR 
