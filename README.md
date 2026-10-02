@@ -2,6 +2,7 @@
 ECG-based blood pressure estimation using ECGDeli, XGBoost Regression, and SHAP
 
 Latar Belakang
+
 Pembahasan hasil berfokus pada performa XGBoost regression dalam mengestimasi tekanan darah sistolik (SBP) dan diastolik (DBP). Sinyal ECG dari Shimmer ECG sensor diekstraksi menggunakan ECGdeli dan dikombinasikan dengan data demografis. Model awal dilatih menggunakan fitur tersebut, kemudian SHAP digunakan untuk menganalisis kontribusi dan menyeleksi fitur berdasarkan mean absolute SHAP. Fitur terpilih digunakan untuk melatih model akhir. Performa model sebelum dan sesudah seleksi dibandingkan menggunakan MAE, RMSE, dan R² untuk mengetahui pengaruh seleksi fitur SHAP terhadap hasil estimasi tekanan darah
 
 Alur Kerja 
@@ -24,9 +25,11 @@ Fitur yang telah terpilih kemudian digunakan untuk melatih kembali model XGBoost
 Model akhir kemudian dievaluasi menggunakan MAE, RMSE, dan R² untuk mengetahui tingkat kesalahan dan kemampuan model dalam mengestimasi tekanan darah.
 
 PENGUMPULAN DATA
+
 Menggunakan datasheets kaggle part 1 dan part 12
 
 EKSTRAKSI FITUR 
+
 %% ECGDeli Processing Example
 % Proses satu record ECG menggunakan ECGDeli
 % Dataset : Cuff-Less Blood Pressure Estimation
