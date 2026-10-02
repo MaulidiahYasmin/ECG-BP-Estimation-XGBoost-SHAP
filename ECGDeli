@@ -1,0 +1,80 @@
+%% ECGDeli Processing Example
+% Proses satu record ECG menggunakan ECGDeli
+% Dataset : Cuff-Less Blood Pressure Estimation
+% Sampling frequency : 125 Hz
+% ECG : single lead
+
+clear;
+clc;
+
+%% 1. Menambahkan ECGDeli
+addpath(genpath('D:\Skripsi\ECGdeli-master (1)\ECGdeli-master'));
+
+%% 2. Load satu record dataset
+data = load('D:\Skripsi\Dataset\part_1.mat\part_1.mat');
+p = data.p;
+
+record = p{1};
+
+PPG = record(1,:);
+ABP = record(2,:);
+ECG = record(3,:);
+
+fs = 125;
+
+%% 3. Deteksi QRS
+FPT = QRS_Detection(ECG, fs, 'm');
+
+%% 4. Deteksi gelombang P
+FPT = P_Detection(ECG, fs, FPT);
+
+%% 5. Deteksi gelombang T
+FPT = T_Detection(ECG, fs, FPT);
+
+%% 6. Menampilkan hasil FPT
+disp('Ukuran FPT:');
+disp(size(FPT));
+
+%% 7. Ekstraksi 7 fitur interval ECG
+sample_to_ms = 1000 / fs;
+
+P_duration = sample_to_ms .* (FPT(:,3) - FPT(:,1));
+QRS_duration = sample_to_ms .* (FPT(:,8) - FPT(:,4));
+T_duration = sample_to_ms .* (FPT(:,12) - FPT(:,10));
+
+PQ_interval = sample_to_ms .* (FPT(:,4) - FPT(:,3));
+PR_interval = sample_to_ms .* (FPT(:,4) - FPT(:,2));
+QT_interval = sample_to_ms .* (FPT(:,12) - FPT(:,4));
+
+RR_interval = sample_to_ms .* diff(FPT(:,6));
+
+%% 8. Menampilkan beberapa hasil fitur
+features = [
+    P_duration(1:end-1), ...
+    QRS_duration(1:end-1), ...
+    T_duration(1:end-1), ...
+    PQ_interval(1:end-1), ...
+    PR_interval(1:end-1), ...
+    QT_interval(1:end-1), ...
+    RR_interval
+    ];
+
+disp('7 fitur ECG:');
+disp(features(1:min(5,size(features,1)),:));
+
+%% 9. Visualisasi ECG dan R peak
+figure;
+
+plot(ECG);
+hold on;
+
+r_peaks = FPT(:,6);
+r_peaks = r_peaks(r_peaks > 0);
+
+plot(r_peaks, ECG(r_peaks), 'ro');
+
+xlabel('Sample');
+ylabel('Amplitude');
+title('Deteksi R-Peak menggunakan ECGDeli');
+legend('ECG','R-Peak');
+grid on;
